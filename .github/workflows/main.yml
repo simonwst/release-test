@@ -24,7 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: '0'
+
       - name: Extract changes
         id: changelog
         uses: requarks/changelog-action@v1
