@@ -22,6 +22,7 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - name: Extract changes
         id: changelog
         uses: requarks/changelog-action@v1
