@@ -2,41 +2,27 @@ name: Main
 
 on: push
 
-env:
-  PNPM_VERSION: 9.0.6
-  NODE_VERSION: 20.12.2
-  SUPABASE_CLI_VERSION: 1.165.0
-  DOCKER_IMAGE_REGISTRY: ghcr.io
-
-permissions:
-  contents: write
-  pull-requests: write
-  deployments: write
-
 jobs:
   release:
     name: Publish new release
     if: startsWith(github.ref, 'refs/tags/v') && endsWith(github.ref, '.0')
     runs-on: ubuntu-22.04
     #needs: test_e2e # Publish only if everything else succeeded
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: '0'
 
-      - name: Extract changes
+      - name: Build Changelog
         id: changelog
-        uses: requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
+        uses: mikepenz/release-changelog-builder-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
         with:
-          body: ${{ steps.changelog.outputs.changes }}
+          body: ${{ steps.changelog.outputs.changelog }}
 
       - name: Create release branch
         run: |
