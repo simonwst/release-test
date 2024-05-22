@@ -12,7 +12,6 @@ jobs:
       pull-requests: read
     #needs: test_e2e # Publish only if everything else succeeded
     steps:
-      - uses: actions/checkout@v4
       - name: Build Changelog
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v4
