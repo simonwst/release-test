@@ -12,11 +12,18 @@ jobs:
       pull-requests: read
     #needs: test_e2e # Publish only if everything else succeeded
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Build Changelog
         id: changelog
         uses: mikepenz/release-changelog-builder-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          commitMode: true
 
       - name: Publish release
         uses: softprops/action-gh-release@v2
